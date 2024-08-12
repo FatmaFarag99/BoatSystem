@@ -3,6 +3,8 @@ using BoatRentalSystem.Application;
 using BoatRentalSystem.Core.Interfaces;
 using BoatRentalSystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,32 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
+
+var logDictionary = $"logs\\{DateTime.Now.Year}\\{DateTime.Now.Month}\\{DateTime.Now.Day}";
+if (!Directory.Exists(logDictionary))
+{
+    Directory.CreateDirectory(logDictionary);
+}
+
+builder.Host.UseSerilog((ctx, lc) => lc
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.Seq("http://localhost:5341", Serilog.Events.LogEventLevel.Information)
+    .WriteTo.File(
+       path: Path.Combine(logDictionary, "logs.json"),
+       rollingInterval: RollingInterval.Day,
+       outputTemplate : "{Timestamp} {Message} {NewLine:1} {Exception:!}"
+    ));
+
+
+builder.Services.AddHangfire(config =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    config.UseSqlServerStorage(connectionString);
+
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,5 +68,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHangfireDashboard("/dashboard");
+app.UseHangfireServer();
 
 app.Run();
