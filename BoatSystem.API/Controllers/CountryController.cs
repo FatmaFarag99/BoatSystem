@@ -3,10 +3,13 @@
     using AutoMapper;
     using BoatRentalSystem.Application;
     using BoatRentalSystem.Core.Entities;
+    using BoatSystem.Core.Models;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Admin)]
+
     public class CountryController : ControllerBase
     {
         private readonly CountryService _CountryService;

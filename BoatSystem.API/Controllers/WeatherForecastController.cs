@@ -1,9 +1,11 @@
 namespace BoatSystem.API.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     [Route("[controller]")]
+
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -18,6 +20,7 @@ namespace BoatSystem.API.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
