@@ -7,8 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BoatSystem.Core\BoatSystem.Core.csproj" />
-    <ProjectReference Include="..\BoatSystem.Infrastructure\BoatSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="City\Commands\Delete\" />
+    <Folder Include="City\Query\Get\" />
   </ItemGroup>
 
 </Project>

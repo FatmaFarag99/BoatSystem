@@ -100,7 +100,7 @@
 
 
 
-        private async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
+        public async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);

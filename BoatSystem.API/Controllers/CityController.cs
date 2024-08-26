@@ -3,7 +3,12 @@
     using AutoMapper;
     using BoatRentalSystem.Application;
     using BoatRentalSystem.Core.Entities;
+    using BoatSystem.Application.City.Commands.Add;
+    using BoatSystem.Application.City.Commands.Update;
+    using BoatSystem.Application.City.Query.List;
+    using BoatSystem.Application.City.ViewModels;
     using BoatSystem.Core.Models;
+    using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,20 +20,22 @@
         private readonly CityService _cityService;
         private readonly IMapper _mapper;
         private readonly ILogger<CityController> _logger;
+        private readonly IMediator _mediator;
 
-        public CityController(CityService cityService, IMapper mapper, ILogger<CityController> logger)
+        public CityController(CityService cityService, IMapper mapper, ILogger<CityController> logger, IMediator mediator)
         {
             _cityService = cityService;
             _mapper = mapper;
             _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CityViewModel>>> Get()
+        public async Task<IActionResult> Get()
         {
-            var city = await _cityService.GetAllCities();
-            var cityViewModel = _mapper.Map<IEnumerable<CityViewModel>>(city);
-            return Ok(cityViewModel);
+            var city = new ListCitiesQuery();
+            var cities = await _mediator.Send(city);
+            return Ok(cities);
         }
 
         [HttpGet("{id}")]
@@ -46,24 +53,25 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] AddCityViewModel addCityViewModel)
+        public async Task<IActionResult> Post([FromBody] AddCityCommand command)
         {
-            var city = _mapper.Map<City>(addCityViewModel);
-            await _cityService.AddCity(city);
-            return CreatedAtAction(nameof(Get), new {id = city.Id} , addCityViewModel);
+            if (command == null)
+            {
+                return BadRequest("City data is required");
+            }
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(CityViewModel cityViewModel)
+        public async Task<IActionResult> Put(UpdateCityCommand command)
         {
-            var existingCity = await _cityService.GetCityById(cityViewModel.Id);
-            if (existingCity == null)
+            var result = await _mediator.Send(command);
+            if (result == null)
             {
-                return NotFound();
+                return BadRequest("error in update city");
             }
-            var city = _mapper.Map<City>(cityViewModel);
-            await _cityService.UpdateCity(city);
-            return Ok(city);
+            return Ok(result);
 
         }
         [HttpDelete]

@@ -1,7 +1,7 @@
 ﻿namespace BoatRentalSystem.Core.Interfaces
 {
     using BoatRentalSystem.Core.Entities;
-
+    using BoatSystem.Core.Entities;
 
     public interface IBaseRepository<TEntity> where TEntity : class
     {
@@ -11,6 +11,13 @@
         Task UpdateAsync(int id,TEntity entity);
         Task DeleteAsync(int id);
     }
+
+
+    public interface IOwnerRepository : IBaseRepository<Owner>
+    {
+        Task<Owner> GetByUserIdAsync(string userId);
+    }
+
     public interface ICityRepository : IBaseRepository<City>
     {
         //Task<IEnumerable<City>> GetAllCities();

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BoatSystem.Application\BoatSystem.Application.csproj" />
     <ProjectReference Include="..\BoatSystem.Core\BoatSystem.Core.csproj" />
   </ItemGroup>
 

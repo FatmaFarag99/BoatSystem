@@ -2,17 +2,18 @@
 {
     using AutoMapper;
     using BoatRentalSystem.Core.Entities;
+    using BoatSystem.Application.City.ViewModels;
 
-    public class CityViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    //public class CityViewModel
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
 
-    public class AddCityViewModel
-    {
-        public string Name { get; set; }
-    }
+    //public class AddCityViewModel
+    //{
+    //    public string Name { get; set; }
+    //}
 
 
     public class CountryViewModel

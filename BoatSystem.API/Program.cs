@@ -14,6 +14,9 @@ using BoatSystem.Application;
 using BoatSystem.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using BoatSystem.Application.City.Commands.Add;
+using BoatRentalSystem.Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +36,11 @@ builder.Services.AddScoped<CityService>();
 
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<CountryService>();
+
+
+
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+
 
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -101,6 +109,14 @@ builder.Services.AddAuthentication(options =>
        };
    });
 
+
+builder.Services.AddMediatR(c =>
+    {
+        c.RegisterServicesFromAssemblies(
+            Assembly.GetAssembly(typeof(AddCityCommand)),
+            Assembly.GetAssembly(typeof(City))
+            );
+    });
 
 var app = builder.Build();
 

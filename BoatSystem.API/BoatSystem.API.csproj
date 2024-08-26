@@ -11,6 +11,7 @@
     <PackageReference Include="Hangfire" Version="1.8.14" />
     <PackageReference Include="Hangfire.Core" Version="1.8.14" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.14" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
@@ -31,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BoatSystem.Application\BoatSystem.Application.csproj" />
+    <ProjectReference Include="..\BoatSystem.Infrastructure\BoatSystem.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
